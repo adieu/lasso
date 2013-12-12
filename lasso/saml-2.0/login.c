@@ -698,7 +698,7 @@ int
 lasso_saml20_login_build_assertion(LassoLogin *login,
 		const char *authenticationMethod,
 		const char *authenticationInstant,
-		G_GNUC_UNUSED const char *notBefore,
+		const char *notBefore,
 		const char *notOnOrAfter)
 {
 	LassoProfile *profile = &login->parent;
@@ -745,6 +745,12 @@ lasso_saml20_login_build_assertion(LassoLogin *login,
 			lasso_saml2_audience_restriction_new());
 	lasso_assign_string(audience_restriction->Audience, profile->remote_providerID);
 	lasso_list_add_new_gobject(assertion->Conditions->AudienceRestriction, audience_restriction);
+	lasso_assign_string(
+		assertion->Conditions->NotBefore,
+		notBefore);
+	lasso_assign_string(
+		assertion->Conditions->NotOnOrAfter,
+		notOnOrAfter);
 
 	assertion->Subject = LASSO_SAML2_SUBJECT(lasso_saml2_subject_new());
 	assertion->Subject->SubjectConfirmation = LASSO_SAML2_SUBJECT_CONFIRMATION(
